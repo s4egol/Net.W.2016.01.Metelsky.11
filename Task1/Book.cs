@@ -61,17 +61,10 @@ namespace Task1
 
         public int CompareTo(Book other)
         {
-            int compareResult;
+            if (ReferenceEquals(other, null))
+                throw new ArgumentException();
 
-            compareResult = Title.CompareTo(other.Title);
-            if (compareResult == 0)
-                compareResult = CountPages.CompareTo(other.CountPages);
-            if (compareResult == 0)
-                compareResult = PublicationYear.CompareTo(other.PublicationYear);
-            if (compareResult == 0)
-                compareResult = Author.CompareTo(other.Author);
-
-            return compareResult;
+            return this.CountPages.CompareTo(other.CountPages);
         }
 
         public int CompareTo(object obj)

@@ -28,10 +28,15 @@ namespace Task1.UI
             BookListService service = new BookListService(books);
             service.AddBook(new Book("Название книги 3", 800, 1980, "Автор Книги 3"));
 
-            Book findBook = service.FindBookByAuthor("Автор Книги 2");
+            Book findBook = service.FindBookWithTag((book) => String.Compare(book.Author, "Автор Книги 2", StringComparison.InvariantCulture) == 0);
             Console.WriteLine();
             Console.WriteLine("Найденная книга:");
-            Console.WriteLine(findBook.ToString());
+
+            if (findBook != null)
+                Console.WriteLine(findBook.ToString());
+            else 
+                Console.WriteLine("Книга не найдена!");
+
             Console.WriteLine();
 
             Storage.BookListStorage storage = new Storage.BookListStorage("E:/storage");

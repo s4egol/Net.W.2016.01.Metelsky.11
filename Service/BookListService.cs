@@ -11,12 +11,17 @@ namespace Service
 {
     public class BookListService
     {
-        public List<Book> Books { get; }
+        private List<Book> Books;
 
         public BookListService(List<Book> books)
         {
             if (books != null)
                 Books = books;
+        }
+
+        public IEnumerable<Book> GetBooks()
+        {
+            return Books.ToArray();
         }
 
         public void AddBook(Book book)
@@ -41,27 +46,24 @@ namespace Service
 
         public void SortBooksByTag(IComparer<Book> comparer)
         {
+            if (ReferenceEquals(comparer, null))
+                throw new ArgumentException();
+
             Books.Sort(comparer);
         }
 
-        public Book FindBookByAuthor(string author) =>
-            FindBookByTag(n => n.Author == author);
-
-        public Book FindBookByTitle(string title) =>
-            FindBookByTag(n => n.Title == title);
-
-        public Book FindBookByPages(int countPages) =>
-            FindBookByTag(n => n.CountPages == countPages);
-
-        public Book FindBookByPublicationYear(int publicationYear) =>
-            FindBookByTag(n => n.PublicationYear == publicationYear);
-
-        private Book FindBookByTag(Func<Book, bool> match)
+        public Book FindBookWithTag(Predicate<Book> predicate)
         {
-            if (ReferenceEquals(match, null))
+            if (ReferenceEquals(predicate, null))
                 throw new ArgumentException();
 
-            return Books.First(match);
+            foreach (var book in Books)
+            {
+                if (predicate(book))
+                    return new Book(book.Title, book.CountPages, book.PublicationYear, book.Author);
+            }
+
+            return null;
         }
 
         public void Save(IBookListStorage bookListStorage)
