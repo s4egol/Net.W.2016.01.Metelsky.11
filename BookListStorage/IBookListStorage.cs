@@ -10,7 +10,7 @@ namespace BookListStorage
 {
     public interface IBookListStorage
     {
-        void SaveBooks(List<Book> books);
+        void SaveBooks(IEnumerable<Book> books);
         List<Book> LoadBooks();
     }
 }

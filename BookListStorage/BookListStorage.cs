@@ -18,16 +18,16 @@ namespace Storage
             this.pathFile = pathFile;
         }
 
-        public void SaveBooks(List<Book> books)
+        public void SaveBooks(IEnumerable<Book> books)
         {
             using (BinaryWriter writer = new BinaryWriter(File.Open(pathFile, FileMode.OpenOrCreate)))
             {
-                for (int i = 0; i < books.Count; i++)
+                foreach(var book in books)
                 {
-                    writer.Write(books[i].Author);
-                    writer.Write(books[i].CountPages);
-                    writer.Write(books[i].PublicationYear);
-                    writer.Write(books[i].Title);
+                    writer.Write(book.Author);
+                    writer.Write(book.CountPages);
+                    writer.Write(book.PublicationYear);
+                    writer.Write(book.Title);
                 }
             }
         }
